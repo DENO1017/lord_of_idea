@@ -17,9 +17,7 @@ void main() {
 
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [
-          localStorageProvider.overrideWithValue(storage),
-        ],
+        overrides: [localStorageProvider.overrideWithValue(storage)],
         child: const MyApp(),
       ),
     );
