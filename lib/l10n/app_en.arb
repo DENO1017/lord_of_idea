@@ -1,0 +1,14 @@
+{
+  "appTitle": "Lord of Idea",
+  "navHome": "Home",
+  "navTools": "Tools",
+  "navJournal": "Journal",
+  "settings": "Settings",
+  "theme": "Theme",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "themeSystem": "System",
+  "language": "Language",
+  "languageZh": "Chinese",
+  "languageEn": "English"
+}

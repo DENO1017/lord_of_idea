@@ -12,6 +12,7 @@ import 'package:lord_of_idea/features/journal/presentation/journal_detail_screen
 import 'package:lord_of_idea/features/journal/presentation/journal_list_screen.dart';
 import 'package:lord_of_idea/features/settings/presentation/settings_screen.dart';
 import 'package:lord_of_idea/features/shared_journal/presentation/shared_journal_screen.dart';
+import 'package:lord_of_idea/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -135,7 +136,19 @@ void main() {
       });
 
       testWidgets('SettingsScreen', (WidgetTester tester) async {
-        await tester.pumpWidget(const MaterialApp(home: SettingsScreen()));
+        final prefs = await SharedPreferences.getInstance();
+        final storage = LocalStorageService(prefs);
+        await tester.pumpWidget(
+          ProviderScope(
+            overrides: [localStorageProvider.overrideWithValue(storage)],
+            child: MaterialApp(
+              locale: const Locale('en'),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              home: const SettingsScreen(),
+            ),
+          ),
+        );
         expect(find.byKey(const Key('settings_screen_title')), findsOneWidget);
       });
     });

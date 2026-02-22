@@ -19,6 +19,17 @@
 
 **说明**：`/:id` 表示路径参数，在 go_router 中对应 `path: 'journal/:id'` 与 `extra.pathParameters['id']`（或等价用法）。
 
+### P1 工具子路由（工具先行阶段）
+
+| 路径 | 说明 | 占位页/组件 | 备注 |
+|------|------|-------------|--------|
+| `/tools/dice` | 骰子工具页 | `DiceScreen` | 见 [dice_spec](dice_spec.md) |
+| `/tools/poem-slip` | 诗签工具页 | `PoemSlipScreen` | 见 [poem_slip_spec](poem_slip_spec.md) |
+| `/tools/tarot` | 简易占卜（单张塔罗）页 | `TarotScreen` | 见 [simple_divination_spec](simple_divination_spec.md) |
+
+- 实现时可在 `/tools` 下配置子路由（ShellRoute 或 children），使从 ToolsScreen 可导航至上述子页并保留返回。
+- 与 [p1_deliverables](../project/p1_deliverables.md) 中「工具入口与路由」一致；产品侧若调整路径或 Screen 名，请同步更新本文档与各 spec。
+
 ---
 
 ## 2. 重定向与守卫

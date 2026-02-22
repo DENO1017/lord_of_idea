@@ -1,0 +1,32 @@
+[
+  {
+    "cardId": "rws_00",
+    "cardName": "愚者",
+    "uprightMeaning": "新的开始、冒险、率真与自由。迈出一步的勇气，对未知保持开放。",
+    "reversedMeaning": "鲁莽、缺乏方向、任性或逃避责任。宜三思而后行。"
+  },
+  {
+    "cardId": "rws_01",
+    "cardName": "魔术师",
+    "uprightMeaning": "意志与行动力、沟通与创造。善用手边资源将想法化为现实。",
+    "reversedMeaning": "欺骗、夸口或才能未善用。沟通受阻或意图不纯。"
+  },
+  {
+    "cardId": "rws_02",
+    "cardName": "女祭司",
+    "uprightMeaning": "直觉、内省与神秘智慧。静观其变，倾听内在声音。",
+    "reversedMeaning": "压抑直觉、表里不一或秘密未明。需更直面内心。"
+  },
+  {
+    "cardId": "rws_13",
+    "cardName": "死神",
+    "uprightMeaning": "结束与转变、放下与重生。某种阶段告终，为新的循环让路。",
+    "reversedMeaning": "抗拒改变、停滞或迟迟无法放手。需要接受转变。"
+  },
+  {
+    "cardId": "rws_36",
+    "cardName": "圣杯王牌",
+    "uprightMeaning": "情感与灵性的新开始、爱、直觉与创意涌现。",
+    "reversedMeaning": "情感波动、直觉受扰或新机会未把握。内心需沉淀。"
+  }
+]

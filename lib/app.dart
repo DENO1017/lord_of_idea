@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lord_of_idea/core/di/app_settings_provider.dart';
 import 'package:lord_of_idea/core/router/app_router.dart';
 import 'package:lord_of_idea/core/theme/app_theme.dart';
+import 'package:lord_of_idea/l10n/app_localizations.dart';
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
@@ -18,8 +19,8 @@ class MyApp extends ConsumerWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: settings.themeMode,
       locale: settings.locale,
-      supportedLocales: const [Locale('en'), Locale('zh')],
-      localizationsDelegates: const [],
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
     );
   }
 }
