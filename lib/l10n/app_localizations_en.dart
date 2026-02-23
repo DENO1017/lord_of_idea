@@ -171,4 +171,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tarotDeckExhausted => 'Deck exhausted, reshuffled';
+
+  @override
+  String get createJournal => 'Create journal';
+
+  @override
+  String get journalDefaultTitle => 'Untitled journal';
+
+  @override
+  String get journalDeleteConfirm =>
+      'Delete this journal? This cannot be undone.';
+
+  @override
+  String get journalDeleteTitle => 'Delete journal';
+
+  @override
+  String get journalAddBlock => 'Add block';
+
+  @override
+  String get journalEdit => 'Edit';
+
+  @override
+  String get journalRead => 'Read';
+
+  @override
+  String get journalToolFromHistory => 'From history';
+
+  @override
+  String get journalToolUseLive => 'Use now';
 }

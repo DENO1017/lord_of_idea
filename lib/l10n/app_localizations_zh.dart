@@ -171,4 +171,31 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get tarotDeckExhausted => '牌组已抽完，已重新洗牌';
+
+  @override
+  String get createJournal => '创建手账';
+
+  @override
+  String get journalDefaultTitle => '未命名手账';
+
+  @override
+  String get journalDeleteConfirm => '确定删除该手帐？此操作不可恢复。';
+
+  @override
+  String get journalDeleteTitle => '删除手帐';
+
+  @override
+  String get journalAddBlock => '添加块';
+
+  @override
+  String get journalEdit => '编辑';
+
+  @override
+  String get journalRead => '阅读';
+
+  @override
+  String get journalToolFromHistory => '从历史选择';
+
+  @override
+  String get journalToolUseLive => '现场使用';
 }

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lord_of_idea/features/divination/domain/divination_service_provider.dart';
 import 'package:lord_of_idea/features/divination/domain/services/divination_service.dart';
+import 'package:lord_of_idea/features/divination/domain/tool_history_provider.dart';
 import 'package:lord_of_idea/l10n/app_localizations.dart';
 import 'package:lord_of_idea/shared/models/divination_result.dart';
 
@@ -75,6 +76,7 @@ class _TarotScreenState extends ConsumerState<TarotScreen> {
       final service = ref.read(divinationServiceProvider);
       final result = service.drawOne(drawFrom, kDefaultDeckId);
       if (mounted) {
+        ref.read(toolHistoryProvider.notifier).addDivination(result);
         setState(() {
           _lastResult = result;
           _drawing = false;

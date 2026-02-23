@@ -6,10 +6,15 @@ import 'package:lord_of_idea/app.dart';
 import 'package:lord_of_idea/core/di/local_storage_provider.dart';
 import 'package:lord_of_idea/core/di/local_storage_service.dart';
 import 'package:lord_of_idea/core/router/app_router.dart';
+import 'package:lord_of_idea/features/journal/data/journal_providers.dart';
+import 'package:lord_of_idea/features/journal/domain/repositories/journal_repository.dart';
 import 'package:lord_of_idea/features/divination/presentation/tools_screen.dart';
 import 'package:lord_of_idea/features/home/presentation/home_screen.dart';
 import 'package:lord_of_idea/features/journal/presentation/journal_detail_screen.dart';
 import 'package:lord_of_idea/features/journal/presentation/journal_list_screen.dart';
+import 'package:lord_of_idea/shared/models/journal.dart';
+import 'package:lord_of_idea/shared/models/journal_block.dart';
+import 'package:lord_of_idea/shared/models/journal_page.dart';
 import 'package:lord_of_idea/features/settings/presentation/settings_screen.dart';
 import 'package:lord_of_idea/features/market/presentation/market_screen.dart';
 import 'package:lord_of_idea/features/shared_journal/presentation/shared_journal_screen.dart';
@@ -116,22 +121,44 @@ void main() {
       });
 
       testWidgets('JournalListScreen', (WidgetTester tester) async {
-        await tester.pumpWidget(const MaterialApp(home: JournalListScreen()));
+        await tester.pumpWidget(
+          ProviderScope(
+            overrides: [
+              journalListProvider.overrideWith((ref) => Future.value([])),
+            ],
+            child: MaterialApp(
+              locale: const Locale('en'),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              home: const JournalListScreen(),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
         expect(
-          find.byKey(const Key('journal_list_screen_title')),
+          find.byKey(const Key('journal_list_create_button')),
           findsOneWidget,
         );
       });
 
       testWidgets('JournalDetailScreen', (WidgetTester tester) async {
+        const journalId = 'test-id';
+        final journal = Journal(
+          id: journalId,
+          title: 'Test Journal',
+          createdAt: DateTime(2025, 1, 1),
+          updatedAt: DateTime(2025, 1, 2),
+        );
+        final mockRepo = _JournalDetailMockRepo(journal: journal);
         await tester.pumpWidget(
-          const MaterialApp(home: JournalDetailScreen(journalId: 'test-id')),
+          ProviderScope(
+            overrides: [journalRepositoryProvider.overrideWithValue(mockRepo)],
+            child: MaterialApp(home: JournalDetailScreen(journalId: journalId)),
+          ),
         );
-        expect(
-          find.byKey(const Key('journal_detail_screen_title')),
-          findsOneWidget,
-        );
-        expect(find.textContaining('test-id'), findsOneWidget);
+        await tester.pumpAndSettle();
+        expect(find.byKey(const Key('journal_detail_app_bar')), findsOneWidget);
+        expect(find.text('Test Journal'), findsOneWidget);
       });
 
       testWidgets('SharedJournalScreen', (WidgetTester tester) async {
@@ -325,4 +352,238 @@ void main() {
       );
     });
   });
+
+  group('P2-7 路由与守卫', () {
+    setUpAll(() {
+      SharedPreferences.setMockInitialValues({});
+    });
+
+    Future<void> pumpAppWithRouter(
+      WidgetTester tester, {
+      String initialLocation = '/',
+      JournalRepository? journalRepo,
+    }) async {
+      final prefs = await SharedPreferences.getInstance();
+      final storage = LocalStorageService(prefs);
+      final overrides = [
+        localStorageProvider.overrideWithValue(storage),
+        appRouterProvider.overrideWithValue(
+          createAppRouter(initialLocation: initialLocation),
+        ),
+        if (journalRepo != null)
+          journalRepositoryProvider.overrideWithValue(journalRepo),
+      ];
+      await tester.pumpWidget(
+        ProviderScope(overrides: overrides, child: const MyApp()),
+      );
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('P2-7-W1: go(/journal) 显示 JournalListScreen', (
+      WidgetTester tester,
+    ) async {
+      final mockRepo = _RouterMockRepoP27(journal: null);
+      await pumpAppWithRouter(
+        tester,
+        initialLocation: '/journal',
+        journalRepo: mockRepo,
+      );
+      expect(find.byType(JournalListScreen), findsOneWidget);
+    });
+
+    testWidgets('P2-7-W2: go(/journal/xyz) 显示 JournalDetailScreen 且 id=xyz', (
+      WidgetTester tester,
+    ) async {
+      const journalId = 'xyz';
+      final journal = Journal(
+        id: journalId,
+        title: 'Xyz Journal',
+        createdAt: DateTime(2025, 1, 1),
+        updatedAt: DateTime(2025, 1, 2),
+      );
+      final page = JournalPage(
+        id: 'page-1',
+        journalId: journalId,
+        orderIndex: 0,
+        createdAt: DateTime(2025, 1, 1),
+      );
+      final mockRepo = _RouterMockRepoP27(
+        journal: journal,
+        pagesByJournal: {
+          journalId: [page],
+        },
+        blocksByPage: {'page-1': []},
+      );
+      await pumpAppWithRouter(
+        tester,
+        initialLocation: '/journal/$journalId',
+        journalRepo: mockRepo,
+      );
+      expect(find.byType(JournalDetailScreen), findsOneWidget);
+      expect(find.text('Xyz Journal'), findsOneWidget);
+    });
+
+    testWidgets('P2-7-W3: go(/journal/xyz/page/pid) 显示详情且 pageId=pid', (
+      WidgetTester tester,
+    ) async {
+      const journalId = 'xyz';
+      const pageId = 'pid';
+      final journal = Journal(
+        id: journalId,
+        title: 'Xyz Journal',
+        createdAt: DateTime(2025, 1, 1),
+        updatedAt: DateTime(2025, 1, 2),
+      );
+      final pages = [
+        JournalPage(
+          id: 'p1',
+          journalId: journalId,
+          orderIndex: 0,
+          createdAt: DateTime(2025, 1, 1),
+        ),
+        JournalPage(
+          id: pageId,
+          journalId: journalId,
+          orderIndex: 1,
+          createdAt: DateTime(2025, 1, 2),
+        ),
+      ];
+      final blockForPid = JournalBlock(
+        id: 'b1',
+        pageId: pageId,
+        type: 'text',
+        orderIndex: 0,
+        payload: '{"content":"Page pid content"}',
+        createdAt: DateTime(2025, 1, 2),
+      );
+      final mockRepo = _RouterMockRepoP27(
+        journal: journal,
+        pagesByJournal: {journalId: pages},
+        blocksByPage: {
+          pageId: [blockForPid],
+        },
+      );
+      await pumpAppWithRouter(
+        tester,
+        initialLocation: '/journal/$journalId/page/$pageId',
+        journalRepo: mockRepo,
+      );
+      expect(find.byType(JournalDetailScreen), findsOneWidget);
+      expect(find.text('Page pid content'), findsOneWidget);
+    });
+
+    testWidgets('P2-7-W4: 不存在的 journal id 重定向到 /journal', (
+      WidgetTester tester,
+    ) async {
+      final mockRepo = _RouterMockRepoP27(journal: null);
+      await pumpAppWithRouter(
+        tester,
+        initialLocation: '/journal/bad',
+        journalRepo: mockRepo,
+      );
+      expect(find.byType(JournalListScreen), findsOneWidget);
+    });
+  });
+}
+
+class _JournalDetailMockRepo implements JournalRepository {
+  _JournalDetailMockRepo({required this.journal});
+
+  final Journal? journal;
+
+  @override
+  Future<Journal?> getJournalById(String id) async => journal;
+
+  @override
+  Future<List<JournalPage>> getPages(String journalId) async => [];
+
+  @override
+  Future<List<JournalBlock>> getBlocks(String pageId) async => [];
+
+  @override
+  Future<List<Journal>> getAllJournals() async => [];
+
+  @override
+  Future<Journal> createJournal({String? title}) async =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> updateJournal(Journal j) async {}
+
+  @override
+  Future<void> deleteJournal(String id) async {}
+
+  @override
+  Future<JournalPage> addPage(String journalId) async =>
+      throw UnimplementedError();
+
+  @override
+  Future<JournalBlock> addBlock(String pageId, JournalBlock block) async =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> reorderBlocks(
+    String pageId,
+    List<String> blockIdsInOrder,
+  ) async {}
+}
+
+/// P2-7 路由测试用：可配置 getJournalById 返回的 journal（或 null）、
+/// getPages(journalId)、getBlocks(pageId)。
+class _RouterMockRepoP27 implements JournalRepository {
+  _RouterMockRepoP27({
+    this.journal,
+    Map<String, List<JournalPage>>? pagesByJournal,
+    Map<String, List<JournalBlock>>? blocksByPage,
+  }) : pagesByJournal = pagesByJournal ?? {},
+       blocksByPage = blocksByPage ?? {};
+
+  final Journal? journal;
+  final Map<String, List<JournalPage>> pagesByJournal;
+  final Map<String, List<JournalBlock>> blocksByPage;
+
+  @override
+  Future<Journal?> getJournalById(String id) async => journal;
+
+  @override
+  Future<List<JournalPage>> getPages(String journalId) async {
+    final list = pagesByJournal[journalId] ?? [];
+    return List.from(list)
+      ..sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
+  }
+
+  @override
+  Future<List<JournalBlock>> getBlocks(String pageId) async {
+    final list = blocksByPage[pageId] ?? [];
+    return List.from(list)
+      ..sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
+  }
+
+  @override
+  Future<List<Journal>> getAllJournals() async =>
+      journal != null ? [journal!] : [];
+
+  @override
+  Future<Journal> createJournal({String? title}) async =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> updateJournal(Journal j) async {}
+
+  @override
+  Future<void> deleteJournal(String id) async {}
+
+  @override
+  Future<JournalPage> addPage(String journalId) async =>
+      throw UnimplementedError();
+
+  @override
+  Future<JournalBlock> addBlock(String pageId, JournalBlock block) async =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> reorderBlocks(
+    String pageId,
+    List<String> blockIdsInOrder,
+  ) async {}
 }

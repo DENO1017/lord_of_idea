@@ -58,5 +58,14 @@
   "tarotDeckRws": "韦特塔罗",
   "tarotModeWithReplacement": "放回",
   "tarotModeWithoutReplacement": "不放回",
-  "tarotDeckExhausted": "牌组已抽完，已重新洗牌"
+  "tarotDeckExhausted": "牌组已抽完，已重新洗牌",
+  "createJournal": "创建手账",
+  "journalDefaultTitle": "未命名手账",
+  "journalDeleteConfirm": "确定删除该手帐？此操作不可恢复。",
+  "journalDeleteTitle": "删除手帐",
+  "journalAddBlock": "添加块",
+  "journalEdit": "编辑",
+  "journalRead": "阅读",
+  "journalToolFromHistory": "从历史选择",
+  "journalToolUseLive": "现场使用"
 }

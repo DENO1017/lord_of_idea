@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lord_of_idea/features/divination/domain/poem_slip_service_provider.dart';
 import 'package:lord_of_idea/features/divination/domain/services/poem_slip_service.dart';
+import 'package:lord_of_idea/features/divination/domain/tool_history_provider.dart';
 import 'package:lord_of_idea/l10n/app_localizations.dart';
 import 'package:lord_of_idea/shared/models/poem_slip_result.dart';
 
@@ -32,6 +33,7 @@ class _PoemSlipScreenState extends ConsumerState<PoemSlipScreen> {
       final service = ref.read(poemSlipServiceProvider);
       final result = await service.draw(_libraryId);
       if (mounted) {
+        ref.read(toolHistoryProvider.notifier).addPoemSlip(result);
         setState(() {
           _lastResult = result;
           _loading = false;

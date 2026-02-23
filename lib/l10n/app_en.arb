@@ -58,5 +58,14 @@
   "tarotDeckRws": "Rider-Waite-Smith",
   "tarotModeWithReplacement": "With replacement",
   "tarotModeWithoutReplacement": "Without replacement",
-  "tarotDeckExhausted": "Deck exhausted, reshuffled"
+  "tarotDeckExhausted": "Deck exhausted, reshuffled",
+  "createJournal": "Create journal",
+  "journalDefaultTitle": "Untitled journal",
+  "journalDeleteConfirm": "Delete this journal? This cannot be undone.",
+  "journalDeleteTitle": "Delete journal",
+  "journalAddBlock": "Add block",
+  "journalEdit": "Edit",
+  "journalRead": "Read",
+  "journalToolFromHistory": "From history",
+  "journalToolUseLive": "Use now"
 }

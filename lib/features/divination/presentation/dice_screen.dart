@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lord_of_idea/features/divination/domain/dice_roller_provider.dart';
 import 'package:lord_of_idea/features/divination/domain/services/dice_roller.dart';
+import 'package:lord_of_idea/features/divination/domain/tool_history_provider.dart';
 import 'package:lord_of_idea/l10n/app_localizations.dart';
 import 'package:lord_of_idea/shared/models/dice_result.dart';
 
@@ -142,6 +143,7 @@ class _DiceScreenState extends ConsumerState<DiceScreen> {
 
   void _onSaveAndCopy(DiceResult diceResult) {
     _copyResult(diceResult);
+    ref.read(toolHistoryProvider.notifier).addDice(diceResult);
     setState(() {
       _savedHistory.insert(0, diceResult);
       if (_savedHistory.length > _maxHistory) _savedHistory.removeLast();

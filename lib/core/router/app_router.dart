@@ -7,6 +7,7 @@ import 'package:lord_of_idea/features/divination/presentation/poem_slip_screen.d
 import 'package:lord_of_idea/features/divination/presentation/tarot_screen.dart';
 import 'package:lord_of_idea/features/divination/presentation/tools_screen.dart';
 import 'package:lord_of_idea/features/home/presentation/home_screen.dart';
+import 'package:lord_of_idea/features/journal/data/journal_providers.dart';
 import 'package:lord_of_idea/features/journal/presentation/journal_detail_screen.dart';
 import 'package:lord_of_idea/features/journal/presentation/journal_list_screen.dart';
 import 'package:lord_of_idea/features/market/presentation/market_screen.dart';
@@ -17,7 +18,7 @@ import 'package:lord_of_idea/features/shared_journal/presentation/shared_journal
 GoRouter createAppRouter({String initialLocation = '/'}) {
   return GoRouter(
     initialLocation: initialLocation,
-    redirect: _redirect,
+    redirect: _redirectAsync,
     routes: <RouteBase>[
       ShellRoute(
         builder: (BuildContext context, GoRouterState state, Widget child) {
@@ -116,6 +117,27 @@ String? redirectByLocation(
   return null;
 }
 
-String? _redirect(BuildContext context, GoRouterState state) {
-  return redirectByLocation(state.matchedLocation, state.pathParameters);
+/// 异步 redirect：先执行同步规则，再校验 journal id 是否存在，不存在则重定向到 /journal。
+Future<String?> _redirectAsync(
+  BuildContext context,
+  GoRouterState state,
+) async {
+  final sync = redirectByLocation(state.matchedLocation, state.pathParameters);
+  if (sync != null) return sync;
+  final loc = state.matchedLocation;
+  final id = state.pathParameters['id'];
+  if (loc.startsWith('/journal/') &&
+      id != null &&
+      id.isNotEmpty &&
+      (loc == '/journal/$id' || loc.startsWith('/journal/$id/'))) {
+    try {
+      final container = ProviderScope.containerOf(context);
+      final repo = container.read(journalRepositoryProvider);
+      final journal = await repo.getJournalById(id);
+      if (journal == null) return '/journal';
+    } catch (_) {
+      return '/journal';
+    }
+  }
+  return null;
 }

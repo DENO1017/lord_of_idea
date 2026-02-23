@@ -421,6 +421,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Deck exhausted, reshuffled'**
   String get tarotDeckExhausted;
+
+  /// No description provided for @createJournal.
+  ///
+  /// In en, this message translates to:
+  /// **'Create journal'**
+  String get createJournal;
+
+  /// No description provided for @journalDefaultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Untitled journal'**
+  String get journalDefaultTitle;
+
+  /// No description provided for @journalDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this journal? This cannot be undone.'**
+  String get journalDeleteConfirm;
+
+  /// No description provided for @journalDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete journal'**
+  String get journalDeleteTitle;
+
+  /// No description provided for @journalAddBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Add block'**
+  String get journalAddBlock;
+
+  /// No description provided for @journalEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get journalEdit;
+
+  /// No description provided for @journalRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Read'**
+  String get journalRead;
+
+  /// No description provided for @journalToolFromHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'From history'**
+  String get journalToolFromHistory;
+
+  /// No description provided for @journalToolUseLive.
+  ///
+  /// In en, this message translates to:
+  /// **'Use now'**
+  String get journalToolUseLive;
 }
 
 class _AppLocalizationsDelegate

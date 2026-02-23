@@ -93,7 +93,8 @@
 | 导出 | 单页或整本导出为图片/PDF（可选） | 可分享单页或备份整本 |
 
 **依赖**：P2 完成。  
-**建议排期**：3–4 周。本阶段仍为本地能力，不依赖后端。
+**建议排期**：3–4 周。本阶段仍为本地能力，不依赖后端。  
+**交付与任务文档**：[p3_deliverables](p3_deliverables.md)、[p3_tasks_and_tests](../development/p3_tasks_and_tests.md)、[富文本与解读规格](../technical/rich_text_interpretation_spec.md)、[装饰系统规格](../technical/decoration_spec.md)、[手帐视觉与导出规格](../technical/journal_visual_export_spec.md)。
 
 ---
 
@@ -169,4 +170,4 @@ P5 打磨与发布                                    [————— 持续 �
 
 *最后更新：初版排期与优先级，随开发进展可调整阶段边界与周期。*
 
-- **最近一次 Project Review**：2026-02-23。结论：P0 已完成；P1 已实现（骰子/诗签/简易占卜、工具入口、结果模型），MCP run_tests 全部 79 例通过；`lib/shared/` 已存在。建议将 P1 交付清单勾选更新为已完成，并进入 P2 前确认块模型与 P1 结果结构对齐。
+- **最近一次 Project Review**：2026-02-23。结论：P0、P1 已完成；P2 手帐核心已实现（数据模型/drift、手帐 CRUD、块编辑与工具栏插入、阅读视图、路由与无效 id 重定向），MCP run_tests 全部 **122** 例通过。建议将 P2 交付清单勾选更新为已完成。

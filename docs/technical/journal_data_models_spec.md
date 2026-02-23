@@ -104,4 +104,13 @@ Page (页面)   1 ---- N Block (块)
 
 ---
 
-*本文档对应 [p2_deliverables](../project/p2_deliverables.md) 中「数据模型」项。*
+## 9. P3 扩展：解读块（interpretation）
+
+- **块类型**：新增 `type: "interpretation"`，与 [rich_text_interpretation_spec](rich_text_interpretation_spec.md) 一致。
+- **payload**：`{"targetBlockId": "被解读的块 id", "content": "解读内容", "format": "markdown"}`。
+- **存储**：仍使用 `journal_blocks` 表，无需新表；若存在块类型枚举需增加 `interpretation`。
+- 详见 [p3_deliverables](../project/p3_deliverables.md)、[富文本与解读规格](rich_text_interpretation_spec.md)。
+
+---
+
+*本文档对应 [p2_deliverables](../project/p2_deliverables.md) 中「数据模型」项；P3 扩展见 §9。*
