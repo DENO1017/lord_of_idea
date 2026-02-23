@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -35,6 +37,15 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+        }
+    }
+
+    // 自定义 APK 输出名：lord_of_idea-{release|debug}-{versionName}.apk
+    applicationVariants.all {
+        val variant = this
+        variant.outputs.all {
+            (this as BaseVariantOutputImpl).outputFileName =
+                "lord_of_idea-${variant.buildType.name}-${variant.versionName}.apk"
         }
     }
 }
