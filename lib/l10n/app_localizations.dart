@@ -122,6 +122,18 @@ abstract class AppLocalizations {
   /// **'Journal'**
   String get navJournal;
 
+  /// No description provided for @navMarket.
+  ///
+  /// In en, this message translates to:
+  /// **'Market'**
+  String get navMarket;
+
+  /// No description provided for @navMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Me'**
+  String get navMe;
+
   /// No description provided for @settings.
   ///
   /// In en, this message translates to:
@@ -169,6 +181,246 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'English'**
   String get languageEn;
+
+  /// No description provided for @toolDice.
+  ///
+  /// In en, this message translates to:
+  /// **'Dice'**
+  String get toolDice;
+
+  /// No description provided for @toolPoemSlip.
+  ///
+  /// In en, this message translates to:
+  /// **'Poem Slip'**
+  String get toolPoemSlip;
+
+  /// No description provided for @toolTarot.
+  ///
+  /// In en, this message translates to:
+  /// **'Tarot'**
+  String get toolTarot;
+
+  /// No description provided for @invalidDice.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid dice expression'**
+  String get invalidDice;
+
+  /// No description provided for @diceExpressionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Expression'**
+  String get diceExpressionLabel;
+
+  /// No description provided for @diceExpressionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 2d6+3, d20'**
+  String get diceExpressionHint;
+
+  /// No description provided for @diceRoll.
+  ///
+  /// In en, this message translates to:
+  /// **'Roll'**
+  String get diceRoll;
+
+  /// No description provided for @diceDiscard.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get diceDiscard;
+
+  /// No description provided for @diceReRoll.
+  ///
+  /// In en, this message translates to:
+  /// **'Re-roll'**
+  String get diceReRoll;
+
+  /// No description provided for @diceSaveAndCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Save & Copy'**
+  String get diceSaveAndCopy;
+
+  /// No description provided for @diceCountZeroError.
+  ///
+  /// In en, this message translates to:
+  /// **'Count cannot be 0'**
+  String get diceCountZeroError;
+
+  /// No description provided for @diceCountOverMaxError.
+  ///
+  /// In en, this message translates to:
+  /// **'Count cannot exceed 20'**
+  String get diceCountOverMaxError;
+
+  /// No description provided for @diceConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get diceConfirm;
+
+  /// No description provided for @diceExpression.
+  ///
+  /// In en, this message translates to:
+  /// **'Expression'**
+  String get diceExpression;
+
+  /// No description provided for @diceTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get diceTotal;
+
+  /// No description provided for @diceHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get diceHistory;
+
+  /// No description provided for @diceCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get diceCopy;
+
+  /// No description provided for @diceQuickD4.
+  ///
+  /// In en, this message translates to:
+  /// **'d4'**
+  String get diceQuickD4;
+
+  /// No description provided for @diceQuickD6.
+  ///
+  /// In en, this message translates to:
+  /// **'d6'**
+  String get diceQuickD6;
+
+  /// No description provided for @diceQuickD8.
+  ///
+  /// In en, this message translates to:
+  /// **'d8'**
+  String get diceQuickD8;
+
+  /// No description provided for @diceQuickD10.
+  ///
+  /// In en, this message translates to:
+  /// **'d10'**
+  String get diceQuickD10;
+
+  /// No description provided for @diceQuickD12.
+  ///
+  /// In en, this message translates to:
+  /// **'d12'**
+  String get diceQuickD12;
+
+  /// No description provided for @diceQuickD20.
+  ///
+  /// In en, this message translates to:
+  /// **'d20'**
+  String get diceQuickD20;
+
+  /// No description provided for @diceQuickD100.
+  ///
+  /// In en, this message translates to:
+  /// **'d100'**
+  String get diceQuickD100;
+
+  /// No description provided for @poemSlipDraw.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw'**
+  String get poemSlipDraw;
+
+  /// No description provided for @poemSlipDrawing.
+  ///
+  /// In en, this message translates to:
+  /// **'Drawing…'**
+  String get poemSlipDrawing;
+
+  /// No description provided for @poemSlipDrawAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw again'**
+  String get poemSlipDrawAgain;
+
+  /// No description provided for @poemSlipCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get poemSlipCopy;
+
+  /// No description provided for @poemSlipLibrary.
+  ///
+  /// In en, this message translates to:
+  /// **'Library'**
+  String get poemSlipLibrary;
+
+  /// No description provided for @poemSlipLibraryMazu.
+  ///
+  /// In en, this message translates to:
+  /// **'Mazu Oracle'**
+  String get poemSlipLibraryMazu;
+
+  /// No description provided for @poemSlipHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'{libraryName} No. {number}'**
+  String poemSlipHeader(String libraryName, String number);
+
+  /// No description provided for @tarotDraw.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw card'**
+  String get tarotDraw;
+
+  /// No description provided for @tarotDrawing.
+  ///
+  /// In en, this message translates to:
+  /// **'Drawing…'**
+  String get tarotDrawing;
+
+  /// No description provided for @tarotCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get tarotCopy;
+
+  /// No description provided for @tarotUpright.
+  ///
+  /// In en, this message translates to:
+  /// **'Upright'**
+  String get tarotUpright;
+
+  /// No description provided for @tarotReversed.
+  ///
+  /// In en, this message translates to:
+  /// **'Reversed'**
+  String get tarotReversed;
+
+  /// No description provided for @tarotDeckRws.
+  ///
+  /// In en, this message translates to:
+  /// **'Rider-Waite-Smith'**
+  String get tarotDeckRws;
+
+  /// No description provided for @tarotModeWithReplacement.
+  ///
+  /// In en, this message translates to:
+  /// **'With replacement'**
+  String get tarotModeWithReplacement;
+
+  /// No description provided for @tarotModeWithoutReplacement.
+  ///
+  /// In en, this message translates to:
+  /// **'Without replacement'**
+  String get tarotModeWithoutReplacement;
+
+  /// No description provided for @tarotDeckExhausted.
+  ///
+  /// In en, this message translates to:
+  /// **'Deck exhausted, reshuffled'**
+  String get tarotDeckExhausted;
 }
 
 class _AppLocalizationsDelegate

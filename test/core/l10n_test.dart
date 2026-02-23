@@ -65,4 +65,61 @@ void main() {
       expect(find.text('Settings'), findsOneWidget);
     });
   });
+
+  group('P0-13 l10n navMarket、navMe', () {
+    testWidgets('P0-13-U1: AppLocalizations 含 navMarket、navMe（zh 为市集、我的）', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('zh'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Builder(
+            builder: (BuildContext context) {
+              final l10n = AppLocalizations.of(context)!;
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(l10n.navMarket, key: const Key('nav_market')),
+                  Text(l10n.navMe, key: const Key('nav_me')),
+                ],
+              );
+            },
+          ),
+        ),
+      );
+      expect(find.byKey(const Key('nav_market')), findsOneWidget);
+      expect(find.byKey(const Key('nav_me')), findsOneWidget);
+      expect(find.text('市集'), findsOneWidget);
+      expect(find.text('我的'), findsOneWidget);
+    });
+
+    testWidgets(
+      'P0-13-U1: AppLocalizations 含 navMarket、navMe（en 为 Market、Me）',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            locale: const Locale('en'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: Builder(
+              builder: (BuildContext context) {
+                final l10n = AppLocalizations.of(context)!;
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(l10n.navMarket, key: const Key('nav_market')),
+                    Text(l10n.navMe, key: const Key('nav_me')),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+        expect(find.text('Market'), findsOneWidget);
+        expect(find.text('Me'), findsOneWidget);
+      },
+    );
+  });
 }

@@ -35,7 +35,7 @@
 | 项 | 内容 | 产出/验收 |
 |----|------|-----------|
 | 应用入口与壳 | `main.dart`、`app.dart`，主题（含基础色/字体）、多主题可选 | 启动即见统一主题 |
-| 路由 | 引入 go_router，定义占位路由（如 `/`、`/tools`、`/journal`、`/journal/:id`） | 可导航到占位页 |
+| 路由与主壳 | 引入 go_router；主页面底部五页签（首页、工具、手账、市集、我的）及占位路由（含 `/home`、`/tools`、`/journal`、`/market`、`/me`） | 可导航到各占位页；见 [主壳规格](../design/main_shell_spec.md)、[路由规格](../technical/routes_spec.md) |
 | 目录结构 | 按 architecture_guide 建立 `core/`、`features/`、`shared/` 及占卜/手帐/共享手帐子目录 | 新代码有明确归属 |
 | 状态管理与 DI | 确定并引入 Riverpod 或 Bloc，在 core 中集中注册 | 可在任意页通过 DI 获取服务 |
 | 基础设置 | 语言/主题持久化（如 shared_preferences）、l10n 占位 | 重启后设置保持 |
@@ -76,7 +76,8 @@
 | 路由与导航 | `/journal`、`/journal/:id`、`/journal/:id/page/:pageId` 等（见 architecture_guide） | 深链可打开指定手帐/页 |
 
 **依赖**：P0、P1；块模型需与 P1 结果结构一致或可转换。  
-**建议排期**：3–4 周。完成后核心闭环成立：用工具 → 记进手帐 → 再阅读。
+**建议排期**：3–4 周。完成后核心闭环成立：用工具 → 记进手帐 → 再阅读。  
+**交付与任务文档**：[p2_deliverables](p2_deliverables.md)、[p2_tasks_and_tests](../development/p2_tasks_and_tests.md)、[journal_data_models_spec](../technical/journal_data_models_spec.md)。
 
 ---
 
@@ -161,10 +162,11 @@ P5 打磨与发布                                    [————— 持续 �
 ## 11. 文档与迭代
 
 - 本文档位于 `docs/project/project_manager.md`。每次迭代或发布后，可更新「建议周期」与实际完成日期、以及「风险与缓冲」中的经验。
+- **审查记录**：每次 Project Review 的详细记录见 [review_log](review_log.md)，审查后请在该文件末尾追加一条记录。
 - 具体任务拆解建议放在 issue/看板中，本文档只保留阶段级优先级与排期，与 [project_overview](project_overview.md)、[architecture_guide](architecture_guide.md) 一起作为项目管理的单一事实来源。
 
 ---
 
 *最后更新：初版排期与优先级，随开发进展可调整阶段边界与周期。*
 
-- **最近一次 Project Review**：2026-02-22。结论：当前处于 P0 阶段；MCP run_tests 全部 35 例通过；应用入口/主题/路由/DI/设置持久化/占位页已实现，目录结构缺 `lib/shared/`（规范允许 P0 留空）；建议补建 `shared/` 空目录并确认集成测试纳入 CI。
+- **最近一次 Project Review**：2026-02-23。结论：P0 已完成；P1 已实现（骰子/诗签/简易占卜、工具入口、结果模型），MCP run_tests 全部 79 例通过；`lib/shared/` 已存在。建议将 P1 交付清单勾选更新为已完成，并进入 P2 前确认块模型与 P1 结果结构对齐。

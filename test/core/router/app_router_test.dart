@@ -11,6 +11,7 @@ import 'package:lord_of_idea/features/home/presentation/home_screen.dart';
 import 'package:lord_of_idea/features/journal/presentation/journal_detail_screen.dart';
 import 'package:lord_of_idea/features/journal/presentation/journal_list_screen.dart';
 import 'package:lord_of_idea/features/settings/presentation/settings_screen.dart';
+import 'package:lord_of_idea/features/market/presentation/market_screen.dart';
 import 'package:lord_of_idea/features/shared_journal/presentation/shared_journal_screen.dart';
 import 'package:lord_of_idea/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -42,6 +43,8 @@ void main() {
             if (r.routes.isNotEmpty) {
               collectPaths(r.routes, prefix: p);
             }
+          } else if (r is ShellRoute) {
+            collectPaths(r.routes, prefix: prefix);
           }
         }
       }
@@ -101,8 +104,15 @@ void main() {
       });
 
       testWidgets('ToolsScreen', (WidgetTester tester) async {
-        await tester.pumpWidget(const MaterialApp(home: ToolsScreen()));
-        expect(find.byKey(const Key('tools_screen_title')), findsOneWidget);
+        await tester.pumpWidget(
+          MaterialApp(
+            locale: const Locale('en'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: const ToolsScreen(),
+          ),
+        );
+        expect(find.byKey(ToolsScreen.keyToolDice), findsOneWidget);
       });
 
       testWidgets('JournalListScreen', (WidgetTester tester) async {
@@ -151,6 +161,168 @@ void main() {
         );
         expect(find.byKey(const Key('settings_screen_title')), findsOneWidget);
       });
+    });
+  });
+
+  group('P0-11 Main shell and bottom nav', () {
+    setUpAll(() {
+      SharedPreferences.setMockInitialValues({});
+    });
+
+    Future<void> pumpAppWithEn(
+      WidgetTester tester, {
+      String initialLocation = '/home',
+    }) async {
+      final prefs = await SharedPreferences.getInstance();
+      final storage = LocalStorageService(prefs);
+      await storage.setString('lord_of_idea.locale_language_code', 'en');
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            localStorageProvider.overrideWithValue(storage),
+            appRouterProvider.overrideWithValue(
+              createAppRouter(initialLocation: initialLocation),
+            ),
+          ],
+          child: const MyApp(),
+        ),
+      );
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('P0-11-W1: 主壳内可见五个页签（首页、工具、手账、市集、我的）', (
+      WidgetTester tester,
+    ) async {
+      await pumpAppWithEn(tester, initialLocation: '/home');
+      final nav = find.byKey(const Key('main_shell_bottom_nav'));
+      expect(nav, findsOneWidget);
+      expect(
+        find.descendant(of: nav, matching: find.text('Home')),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: nav, matching: find.text('Tools')),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: nav, matching: find.text('Journal')),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: nav, matching: find.text('Market')),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: nav, matching: find.text('Me')),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('P0-11-W2: 点击「市集」页签后当前路由为 /market，内容区为 MarketScreen', (
+      WidgetTester tester,
+    ) async {
+      await pumpAppWithEn(tester, initialLocation: '/home');
+      await tester.tap(find.text('Market'));
+      await tester.pumpAndSettle();
+      expect(find.byType(MarketScreen), findsOneWidget);
+      final router =
+          tester.widget<MaterialApp>(find.byType(MaterialApp)).routerConfig
+              as GoRouter;
+      expect(router.routerDelegate.currentConfiguration.uri.path, '/market');
+    });
+
+    testWidgets('P0-11-W3: 点击「我的」页签后当前路由为 /me，内容区为 SettingsScreen', (
+      WidgetTester tester,
+    ) async {
+      await pumpAppWithEn(tester, initialLocation: '/home');
+      await tester.tap(find.text('Me'));
+      await tester.pumpAndSettle();
+      expect(find.byType(SettingsScreen), findsOneWidget);
+      final router =
+          tester.widget<MaterialApp>(find.byType(MaterialApp)).routerConfig
+              as GoRouter;
+      expect(router.routerDelegate.currentConfiguration.uri.path, '/me');
+    });
+
+    testWidgets('P0-11-W4: 深链 go(/market) 后显示市集页且底部市集页签高亮', (
+      WidgetTester tester,
+    ) async {
+      await pumpAppWithEn(tester, initialLocation: '/market');
+      expect(find.byType(MarketScreen), findsOneWidget);
+      expect(find.byKey(const Key('main_shell_bottom_nav')), findsOneWidget);
+    });
+  });
+
+  group('P0-13 底部导航市集、我的文案（l10n navMarket、navMe）', () {
+    setUpAll(() {
+      SharedPreferences.setMockInitialValues({});
+    });
+
+    Future<void> pumpAppWithZh(
+      WidgetTester tester, {
+      String initialLocation = '/home',
+    }) async {
+      final prefs = await SharedPreferences.getInstance();
+      final storage = LocalStorageService(prefs);
+      await storage.setString('lord_of_idea.locale_language_code', 'zh');
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            localStorageProvider.overrideWithValue(storage),
+            appRouterProvider.overrideWithValue(
+              createAppRouter(initialLocation: initialLocation),
+            ),
+          ],
+          child: const MyApp(),
+        ),
+      );
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('P0-13-W1: locale 为 zh 时底部「市集」「我的」为中文', (
+      WidgetTester tester,
+    ) async {
+      await pumpAppWithZh(tester, initialLocation: '/home');
+      final nav = find.byKey(const Key('main_shell_bottom_nav'));
+      expect(nav, findsOneWidget);
+      expect(
+        find.descendant(of: nav, matching: find.text('市集')),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: nav, matching: find.text('我的')),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('P0-13-W2: locale 为 en 时底部为 "Market"、"Me"', (
+      WidgetTester tester,
+    ) async {
+      final prefs = await SharedPreferences.getInstance();
+      final storage = LocalStorageService(prefs);
+      await storage.setString('lord_of_idea.locale_language_code', 'en');
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            localStorageProvider.overrideWithValue(storage),
+            appRouterProvider.overrideWithValue(
+              createAppRouter(initialLocation: '/home'),
+            ),
+          ],
+          child: const MyApp(),
+        ),
+      );
+      await tester.pumpAndSettle();
+      final nav = find.byKey(const Key('main_shell_bottom_nav'));
+      expect(nav, findsOneWidget);
+      expect(
+        find.descendant(of: nav, matching: find.text('Market')),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: nav, matching: find.text('Me')),
+        findsOneWidget,
+      );
     });
   });
 }

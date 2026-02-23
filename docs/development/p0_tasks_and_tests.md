@@ -18,6 +18,9 @@
 | P0-8 | 国际化（l10n、arb、locale） | Unit + Widget | `test/core/l10n_test.dart`、Widget 内文案断言 |
 | P0-9 | 设置页（SettingsScreen）与持久化 | Widget + Integration | `test/features/.../settings_screen_test.dart`、`integration_test/app_test.dart` |
 | P0-10 | 规范与质量（analyze、format、README） | — | 人工/CI 验收 |
+| P0-11 | 主壳底部五页签（ShellRoute、BottomNav、/home、/tools、/journal、/market、/me） | Widget | `test/core/router/app_router_test.dart`、Shell/导航测试 |
+| P0-12 | 市集与「我的」占位页（MarketScreen、MeScreen）及路由 | Widget | `test/features/.../market_screen_test.dart`、`me_screen_test.dart` |
+| P0-13 | l10n 新增 navMarket、navMe | Unit + Widget | l10n 断言、底部导航文案 |
 
 ---
 
@@ -216,6 +219,66 @@
 
 ---
 
+## P0-11：主壳底部五页签
+
+**开发内容**  
+- 主页面采用主壳 + 底部导航：最下方固定五个页签 **首页、工具、手账、市集、我的**，对应路由 `/home`、`/tools`、`/journal`、`/market`、`/me`（见 [主壳规格](../design/main_shell_spec.md)、[路由规格](../technical/routes_spec.md)）。  
+- 使用 go_router 的 ShellRoute（或等价结构）包裹上述五个子路由，使底部导航栏始终可见；切换页签时切换内容区，当前页签高亮。  
+- 根路径 `/` 重定向到 `/home` 行为不变。
+
+**验收**  
+启动后可见底部五页签；点击各页签可切换到对应页面；深链访问 `/market`、`/me` 时对应页签高亮且内容正确。
+
+### 对应测试用例
+
+| 编号 | 类型 | 描述 | 断言/步骤 |
+|------|------|------|-----------|
+| P0-11-W1 | Widget | 主壳内可见五个页签（首页、工具、手账、市集、我的） | pumpApp 使用 appRouterProvider，go('/home')，find 底部导航含 5 个可点击项（或 5 个图标/文案）。 |
+| P0-11-W2 | Widget | 点击「市集」页签后当前路由为 /market，内容区为 MarketScreen | tap 市集页签，pump，验证 location 含 /market 且 find.byType(MarketScreen)。 |
+| P0-11-W3 | Widget | 点击「我的」页签后当前路由为 /me，内容区为 MeScreen 或 SettingsScreen | tap 我的页签，pump，验证 location 含 /me 且 find 我的页内容。 |
+| P0-11-W4 | Widget | 深链 go('/market') 后显示市集页且底部市集页签高亮 | go('/market')，pump，find MarketScreen，可选：find 市集页签为选中态。 |
+
+---
+
+## P0-12：市集与「我的」占位页及路由
+
+**开发内容**  
+- 新增 `MarketScreen`：市集占位页，路由 `/market`；内容可为居中标题 +「市集」或路由路径文案。  
+- 新增 `MeScreen`（或使用 `SettingsScreen` 兼作「我的」页）：主要为各类设置入口；路由 `/me`。若实现为独立 MeScreen，则其内可包含设置入口或直接嵌入设置内容。  
+- 在 go_router 中注册 `/market`、`/me`，与主壳五页签对应（见 [主壳规格](../design/main_shell_spec.md)）。
+
+**验收**  
+从底部导航进入市集、我的可见对应占位页；路由表包含 `/market`、`/me`。
+
+### 对应测试用例
+
+| 编号 | 类型 | 描述 | 断言/步骤 |
+|------|------|------|-----------|
+| P0-12-W1 | Widget | 路由 /market 解析为 MarketScreen | go('/market')，pump，find.byType(MarketScreen)。 |
+| P0-12-W2 | Widget | 路由 /me 解析为 MeScreen 或 SettingsScreen（我的页） | go('/me')，pump，find 我的页或设置页内容。 |
+| P0-12-W3 | Widget | MarketScreen 能 build 且含可识别内容（如「市集」或路由文案） | pumpWidget MarketScreen（提供必要 Provider），find 市集相关文案。 |
+
+---
+
+## P0-13：l10n 新增 navMarket、navMe
+
+**开发内容**  
+- 在 `app_zh.arb`、`app_en.arb` 中新增 `navMarket`（市集 / Market）、`navMe`（我的 / Me），与 [settings_and_l10n_spec](../technical/settings_and_l10n_spec.md) 一致。  
+- 主壳底部导航栏使用上述 key 展示页签文案（若使用文案展示）。
+
+**验收**  
+切换语言后，市集、我的页签文案随 locale 变化；生成类包含 navMarket、navMe getter。
+
+### 对应测试用例
+
+| 编号 | 类型 | 描述 | 断言/步骤 |
+|------|------|------|-----------|
+| P0-13-U1 | Unit | AppLocalizations 含 navMarket、navMe | 在 Widget 测试中 context.l10n.navMarket、context.l10n.navMe 非空且为预期字符串（依 locale）。 |
+| P0-13-W1 | Widget | locale 为 zh 时底部「市集」「我的」为中文 | pumpWidget 主壳（locale: zh），find 含「市集」「我的」或等价。 |
+| P0-13-W2 | Widget | locale 为 en 时为 "Market"、"Me" | 同上，locale: en，find.text('Market')、find.text('Me') 或等价。 |
+
+---
+
 ## 测试文件目录建议
 
 ```
@@ -232,6 +295,10 @@ test/
 ├── features/
 │   ├── home/
 │   │   └── home_screen_test.dart    # P0-3-W4：HomeScreen
+│   ├── market/
+│   │   └── market_screen_test.dart  # P0-12：MarketScreen
+│   ├── me/
+│   │   └── me_screen_test.dart       # P0-12：MeScreen（若独立）
 │   ├── settings/                     # 或 core/settings
 │   │   └── settings_screen_test.dart # P0-7、P0-9：SettingsScreen
 │   └── ...                           # 其他 Screen 占位测试
@@ -249,9 +316,11 @@ integration_test/
 |-----------------------------------------------------|------------|----------|
 | 应用入口与壳 | P0-1、P0-2 | P0-1-W1/W2，P0-2-U1/U2/U3/W1 |
 | 路由 | P0-3、P0-4 | P0-3-U1/U2/U3，P0-3-W1～W4 |
+| 路由与主壳（五页签） | P0-11、P0-12 | P0-11-W1～W4，P0-12-W1～W3 |
 | 目录结构 | P0-4 | 由 P0-3 覆盖 |
 | 状态管理与 DI | P0-5、P0-6、P0-7 | P0-5-U1～U4，P0-6-U1～U4，P0-7-W1/W2 |
 | 基础设置 | P0-8、P0-9 | P0-8-U1/W1/W2，P0-9-W1/W2/W3，P0-9-I1 |
+| l10n（含市集、我的） | P0-8、P0-13 | P0-8-U1/W1/W2，P0-13-U1/W1/W2 |
 | 规范与质量 | P0-10 | P0-10-C1/C2/C3 |
 
 ---

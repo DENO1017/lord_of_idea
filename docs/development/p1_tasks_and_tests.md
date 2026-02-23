@@ -17,6 +17,7 @@
 | P1-7 | 简易占卜页（TarotScreen / DivinationScreen）与路由 | Widget | `test/features/divination/presentation/tarot_screen_test.dart` |
 | P1-8 | 工具聚合页（ToolsScreen）入口与子路由导航 | Widget | `test/features/divination/presentation/tools_screen_test.dart`、路由测试 |
 | P1-9 | 结果可复制（可选）与序列化一致性 | Unit + Widget | 各模型 toJson/fromJson 往返、复制按钮行为 |
+| P1-10 | 工具聚合页入口为按钮形式排布 | Widget | `test/features/divination/presentation/tools_screen_test.dart` |
 
 ---
 
@@ -194,6 +195,24 @@
 
 ---
 
+## P1-10：工具聚合页入口为按钮形式排布
+
+**开发内容**  
+- ToolsScreen 上骰子、诗签、占卜三个工具入口采用 **按钮形式排布**（非卡片形式），与 [p1_deliverables](project/p1_deliverables.md)、[主壳规格](../design/main_shell_spec.md) 一致。  
+- 每个入口为按钮或类按钮控件，点击仍跳转至 `/tools/dice`、`/tools/poem-slip`、`/tools/tarot`；l10n 仍为 `toolDice`、`toolPoemSlip`、`toolTarot`。
+
+**验收**  
+工具页可见三个以按钮形式排布的入口；点击行为与 P1-8 一致。
+
+### 对应测试用例
+
+| 编号 | 类型 | 描述 | 断言/步骤 |
+|------|------|------|-----------|
+| P1-10-W1 | Widget | ToolsScreen 中三个工具入口以按钮形式排布（如 ElevatedButton、TextButton 或含按钮样式的可点击区域） | pumpWidget ToolsScreen，find 三个按钮或含 button 语义的 Widget（如 find.byType(ElevatedButton) 数量 ≥ 1，或 find 三个可点击入口且布局为按钮式）。 |
+| P1-10-W2 | Widget | 按钮排布下点击骰子/诗签/占卜仍正确跳转至对应子路由 | 同 P1-8-W2，tap 各入口，验证 router location 或 find 对应 Screen。 |
+
+---
+
 ## 测试文件目录建议
 
 ```
@@ -229,7 +248,7 @@ integration_test/
 | 骰子 | P1-1、P1-2、P1-3 | P1-1-U1/U2，P1-2-U1～U5，P1-3-W1～W3 |
 | 诗签 | P1-1、P1-4、P1-5 | P1-1-U3，P1-4-U1～U3，P1-5-W1～W3 |
 | 简易占卜 | P1-1、P1-6、P1-7 | P1-1-U4，P1-6-U1～U3，P1-7-W1～W3 |
-| 工具入口 | P1-8 | P1-8-W1/W2，P1-8-I1 |
+| 工具入口 | P1-8、P1-10 | P1-8-W1/W2，P1-8-I1，P1-10-W1/W2 |
 | 结果数据结构 | P1-1、P1-9 | P1-1-U1～U4，P1-9-U1 |
 
 ---

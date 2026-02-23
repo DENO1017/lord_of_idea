@@ -46,6 +46,8 @@
 | 首页 | `navHome` | 首页 | Home |
 | 工具 | `navTools` | 工具 | Tools |
 | 手帐 | `navJournal` | 手帐 | Journal |
+| 市集 | `navMarket` | 市集 | Market |
+| 我的 | `navMe` | 我的 | Me |
 | 设置 | `settings` | 设置 | Settings |
 | 主题 | `theme` | 主题 | Theme |
 | 浅色 / 深色 / 跟随系统 | `themeLight` / `themeDark` / `themeSystem` | 浅色 / 深色 / 跟随系统 | Light / Dark / System |
@@ -69,7 +71,7 @@
 - **key 前缀**：`lord_of_idea.`；设置项 key：`theme_mode`、`locale_language_code`、`first_launch_done`（全名带前缀）。
 - **主题/语言默认值**：主题 `'system'`，语言 `''`（跟随系统）。
 - **语言与 arb**：支持 `zh`、`en`；arb 目录 `lib/l10n`，文件 `app_zh.arb`、`app_en.arb`；l10n 生成类 `AppLocalizations`。
-- **P0 文案 key**：`appTitle`、`navHome`、`navTools`、`navJournal`、`settings`、`theme`、`themeLight`/`themeDark`/`themeSystem`、`language`（见 §3.2 表）。
+- **P0 文案 key**：`appTitle`、`navHome`、`navTools`、`navJournal`、`navMarket`、`navMe`、`settings`、`theme`、`themeLight`/`themeDark`/`themeSystem`、`language`（见 §3.2 表）。
 - **设置变更通知**：Riverpod `appSettingsProvider`；设置页改 Notifier，根/App 层 `ref.watch(appSettingsProvider)` 自动重建。
 
 实现时与 `core/di/`、`lib/l10n/` 及设置页保持一致。

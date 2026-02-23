@@ -32,7 +32,7 @@
 ### 路由 — ✅ 已填写
 
 - 守卫与重定向逻辑 → 见 `docs/technical/routes_spec.md`（根路径→/home，无效 journal id→/journal，P0 不启用登录守卫）。
-- 占位页组件名 → HomeScreen、ToolsScreen、JournalListScreen、JournalDetailScreen、SharedJournalScreen、SettingsScreen。
+- 占位页组件名 → HomeScreen、ToolsScreen、JournalListScreen、JournalDetailScreen、MarketScreen、MeScreen（或 SettingsScreen 兼作「我的」）、SharedJournalScreen；主壳底部五页签见 [主壳规格](../design/main_shell_spec.md)。
 
 ### 状态与 DI — ✅ 已填写
 

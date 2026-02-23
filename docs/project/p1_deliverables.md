@@ -44,17 +44,17 @@
 ### 工具入口与路由 — ✅ 已填写
 
 - 已定稿：子路由 `/tools/dice`、`/tools/poem-slip`、`/tools/tarot` 及对应 `DiceScreen`、`PoemSlipScreen`、`TarotScreen`（见 [routes_spec](../technical/routes_spec.md)）。
-- **已决策**：工具聚合页（ToolsScreen）入口 UI 使用**卡片形式**；l10n key：`toolDice`、`toolPoemSlip`、`toolTarot`。
+- **已决策**：工具聚合页（ToolsScreen）入口 UI 使用**按钮形式排布**；l10n key：`toolDice`、`toolPoemSlip`、`toolTarot`。主壳与五页签见 [主壳规格](../design/main_shell_spec.md)。
 
 ---
 
 ## P1 完成检查
 
-- [ ] 骰子：支持 d4～d20 及自定义面数，支持表达式（如 2d6+3），结果可序列化为 DiceResult。
-- [ ] 诗签：至少 1 套默认库，可抽签、可换库，结果可序列化为 PoemSlipResult。
-- [ ] 简易占卜：单张塔罗 + 正逆位 + 释义（本地数据），结果可序列化为 DivinationResult。
-- [ ] 工具入口：从首页或工具页可进入骰子/诗签/占卜各子页并返回。
-- [ ] 结果数据结构：三种结果模型已实现且与 [tool_result_models_spec](../technical/tool_result_models_spec.md) 一致，便于 P2 插入手帐。
+- [x] 骰子：支持 d4～d20 及自定义面数，支持表达式（如 2d6+3），结果可序列化为 DiceResult。
+- [x] 诗签：至少 1 套默认库，可抽签、可换库，结果可序列化为 PoemSlipResult。
+- [x] 简易占卜：单张塔罗 + 正逆位 + 释义（本地数据），结果可序列化为 DivinationResult。
+- [x] 工具入口：从首页或工具页可进入骰子/诗签/占卜各子页并返回。
+- [x] 结果数据结构：三种结果模型已实现且与 [tool_result_models_spec](../technical/tool_result_models_spec.md) 一致，便于 P2 插入手帐。
 - [x] 所有「需填写」项已在对应文档中填写或定稿（见上文各节）。
 
 ---
